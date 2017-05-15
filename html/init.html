@@ -1,0 +1,158 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Initialization Function for MemeBees</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-12"><meta name="DC.source" content="init.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><b>Initialization Function for <i>MemeBees</i></b></h1><!--introduction--><p>Created on May 8, 2017 By Parsa Beheshti</p><p>From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global Optimization" by <i>Fister et al</i>.</p><p><a href="runMB.html">Back to Main Method</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function I/O</a></li><li><a href="#2">Source Code</a></li></ul></div><h2>Function I/O<a name="1"></a></h2><p><b>Input</b>:</p><div><ul><li><b>numBees</b>: # of bees the search is started with; determines # of rows for data matrix sampleData.</li></ul></div><div><ul><li><b>numParam</b>: # of design parameters we are exploring; determines # of      columns for data matrix sampleData.</li></ul></div><div><ul><li><b>upperBound</b>: row vector representing the upper bound for each     parameter in sampleData.</li></ul></div><div><ul><li><b>lowerBound</b>: row vector representing the lower bound for each     parameter in sampleData.</li></ul></div><p><b>Output</b>:</p><div><ul><li><b>solutionDB</b>: Data structure of candidate solutions.</li></ul></div><div><ul><li><b>objValDB</b>: Data structure of candidate solutions' objective values.</li></ul></div><div><ul><li><b>fitnessDiv</b>: Dynamic matrix of fitness diversity metric values (ends      up becoming row vector).</li></ul></div><h2>Source Code<a name="2"></a></h2><pre class="codeinput"><span class="keyword">function</span> [solutionDB, objValDB, fitnessDiv] = init(numBees, numParam, upperBound, lowerBound)
+</pre><p>Generates a random number betweeen 0 and 1 in the same size as the sample matrix. Then, creates a vectorized equivalent of the formula given by,</p><p><img vspace="5" hspace="5" src="eq1.PNG" alt=""> </p><pre class="codeinput">    randMat = rand(numBees,numParam);
+
+    genData = (repmat((upperBound-lowerBound), numBees, 1) .* randMat) + repmat(lowerBound,  numBees, 1);
+</pre><p>Initializes two structures and a matrix:</p><div><ul><li><b>solutionDB</b>: Candidate solutions;</li><li><b>objValDB</b>: Objective Values, scouted count, and best objective values for corresponding candidate solutions;</li><li><b>fitnessDiv</b>: Fitness diversity metric storage.</li></ul></div><pre class="codeinput">    solutionDB = repmat(struct(<span class="string">'x'</span>,1,<span class="string">'params'</span>,[]), numBees, 1);
+    objValDB = repmat(struct(<span class="string">'x'</span>,1,<span class="string">'objVal'</span>,0, <span class="string">'best'</span>, 0, <span class="string">'scouted'</span>, 0),numBees,1);
+    fitnessDiv = [];
+</pre><p>Inserts generated data into the structures.</p><pre class="codeinput">    <span class="keyword">for</span> i=1:numBees
+        solutionDB(i).x = i;
+        solutionDB(i).params = genData(i,:);
+
+        objValDB(i).x = i;
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p><a href="runMB.html">Back to Main Method</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% *Initialization Function for _MemeBees_*
+% Created on May 8, 2017
+% By Parsa Beheshti
+%
+% From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global
+% Optimization" by _Fister et al_.
+%
+% <runMB.html Back to Main Method>
+%% Function I/O
+% *Input*:
+% 
+% * *numBees*: # of bees the search is started with; determines # of
+% rows for data matrix sampleData.
+%
+% * *numParam*: # of design parameters we are exploring; determines # of
+%      columns for data matrix sampleData.
+%
+% * *upperBound*: row vector representing the upper bound for each
+%     parameter in sampleData.
+%
+% * *lowerBound*: row vector representing the lower bound for each
+%     parameter in sampleData.
+%
+% *Output*:
+%
+% * *solutionDB*: Data structure of candidate solutions.
+%
+% * *objValDB*: Data structure of candidate solutions' objective values.
+%
+% * *fitnessDiv*: Dynamic matrix of fitness diversity metric values (ends
+%      up becoming row vector).
+
+%% Source Code
+
+function [solutionDB, objValDB, fitnessDiv] = init(numBees, numParam, upperBound, lowerBound)
+
+    %% 
+    % Generates a random number betweeen 0 and 1 in the same size as the
+    % sample matrix. Then, creates a vectorized equivalent of the formula
+    % given by,
+    %
+    % <<eq1.PNG>>
+    
+    randMat = rand(numBees,numParam);     
+    
+    genData = (repmat((upperBound-lowerBound), numBees, 1) .* randMat) + repmat(lowerBound,  numBees, 1);
+    
+    %%
+    % Initializes two structures and a matrix:
+    %
+    % * *solutionDB*: Candidate solutions;
+    % * *objValDB*: Objective Values, scouted count, and best objective
+    % values for corresponding candidate solutions;
+    % * *fitnessDiv*: Fitness diversity metric storage.
+    
+    solutionDB = repmat(struct('x',1,'params',[]), numBees, 1);
+    objValDB = repmat(struct('x',1,'objVal',0, 'best', 0, 'scouted', 0),numBees,1);
+    fitnessDiv = [];
+    
+    %%
+    % Inserts generated data into the structures.
+    
+    for i=1:numBees
+        solutionDB(i).x = i;
+        solutionDB(i).params = genData(i,:);
+        
+        objValDB(i).x = i;
+    end
+end
+%%
+% <runMB.html Back to Main Method>
+
+##### SOURCE END #####
+--></body></html>

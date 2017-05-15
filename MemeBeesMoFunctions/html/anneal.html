@@ -1,0 +1,188 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>anneal: Short-range Direct Search Heuristic used to improve solution</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-15"><meta name="DC.source" content="anneal.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><b>anneal: Short-range Direct Search Heuristic used to improve solution</b></h1><!--introduction--><p>Created on May 12 2017</p><p>Implementation of simulated annealing algorithm. Can be used in place of Nelder-Mead for Local Search.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1"><b>Function I/O</b></a></li><li><a href="#2"><b>Parameter Considerations</b></a></li><li><a href="#3"><b>Source Code</b></a></li><li><a href="#9"><b>Acceptance Probability Function</b></a></li></ul></div><h2><b>Function I/O</b><a name="1"></a></h2><p><b>Input</b>: * <b>oldsolution</b>: Candidate solution parameters to conduct local search.</p><div><ul><li><b>oldcost</b>: The objective value of the old solution.-</li></ul></div><div><ul><li><b>T</b>: Starting temperature.</li></ul></div><div><ul><li><b>alpha</b>: Geometrical temperature decay rate.</li></ul></div><div><ul><li><b>alphatime</b>: Number of iterations required for each temperature.</li></ul></div><div><ul><li><b>T_min</b>: Minimum temparature</li></ul></div><p><b>Output</b>:</p><div><ul><li><b>oldsolution</b> = Improved candidate solutions.</li></ul></div><div><ul><li><b>cost</b> = fitness of the new solution, outputed to conserve function calls</li></ul></div><p>The advantage of this approach is that the entire database does not need to be passed to the function, only the specific solution that needs to be improved.</p><h2><b>Parameter Considerations</b><a name="2"></a></h2><div><ul><li>alpha will typically be between 0.99 and 0.8</li><li>T will usually be 1.00</li><li>alpha time can be between 100 and 1000</li><li>T_min can be 0.01</li></ul></div><h2><b>Source Code</b><a name="3"></a></h2><pre class="codeinput"><span class="keyword">function</span> [oldSolution, oldCost] = anneal(oldSolution, oldCost, T, alpha, T_min, alphaTime)
+
+<span class="keyword">while</span> (T&gt;T_min)
+</pre><pre class="codeinput">    i = 1;
+</pre><p>The algorithm will stop operation when the minimum temperature is reached.</p><pre class="codeinput">    <span class="keyword">while</span> (i&lt;=alphaTime)
+</pre><pre class="codeinput">        p = randperm(length(oldSolution),2);
+        solution = oldSolution;
+        solution(p(1))= oldSolution(p(2));
+        solution(p(2))= oldSolution(p(1));
+</pre><p>Generate random neighboring solution from current solution by swapping 2 variables.</p><pre class="codeinput">        cost = objFun(solution);
+</pre><p>Fitness obtained from an external script for modularity</p><h2><b>Acceptance Probability Function</b><a name="9"></a></h2><p><img vspace="5" hspace="5" src="anneal1.PNG" alt=""> </p><p>This formula calculates the chance of switching to the new solution. If new cost is lower than old cost switching will occur.</p><pre class="codeinput">        ap = exp((oldCost-cost)/T);
+
+        <span class="keyword">if</span> ap&gt;rand()
+            oldSolution = solution;
+            oldCost = cost;
+        <span class="keyword">end</span>
+
+        i= i+1;
+</pre><pre class="codeinput">    <span class="keyword">end</span>
+</pre><p>This enacts the decay in temperature.</p><pre class="codeinput">    T = T*alpha;
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% *anneal: Short-range Direct Search Heuristic used to improve solution*
+%
+% Created on May 12 2017
+%
+% Implementation of simulated annealing algorithm. 
+% Can be used in place of Nelder-Mead for Local Search.
+
+%%                                  *Function I/O*
+%
+% *Input*: 
+% * *oldsolution*: Candidate solution parameters to conduct local search.
+%
+% * *oldcost*: The objective value of the old solution.-
+%
+% * *T*: Starting temperature.
+%
+% * *alpha*: Geometrical temperature decay rate.
+%
+% * *alphatime*: Number of iterations required for each temperature.
+%
+% * *T_min*: Minimum temparature
+%
+% *Output*: 
+%
+% * *oldsolution* = Improved candidate solutions.
+% 
+% * *cost* = fitness of the new solution, outputed to conserve function calls
+%
+% The advantage of this approach is that the entire database does not need to be
+% passed to the function, only the specific solution that needs to be
+% improved.
+
+%% *Parameter Considerations*
+%
+% * alpha will typically be between 0.99 and 0.8
+% * T will usually be 1.00
+% * alpha time can be between 100 and 1000
+% * T_min can be 0.01
+
+
+
+%% *Source Code*
+
+function [oldSolution, oldCost] = anneal(oldSolution, oldCost, T, alpha, T_min, alphaTime)
+
+while (T>T_min)
+    i = 1;
+    
+    %%
+    % The algorithm will stop operation when the minimum temperature is
+    % reached.
+    while (i<=alphaTime)
+        p = randperm(length(oldSolution),2);
+        solution = oldSolution;
+        solution(p(1))= oldSolution(p(2));
+        solution(p(2))= oldSolution(p(1));
+        
+        %% 
+        % Generate random neighboring solution from current solution by
+        % swapping 2 variables.
+        
+        cost = objFun(solution);
+        %%
+        % Fitness obtained from an external script for modularity
+        
+        
+        
+        %% *Acceptance Probability Function*
+        % 
+        % <<anneal1.PNG>> 
+        %
+        % This formula calculates the chance of switching to the new
+        % solution. If new cost is lower than old cost switching will
+        % occur.
+        
+        ap = exp((oldCost-cost)/T); 
+        
+        if ap>rand()
+            oldSolution = solution;
+            oldCost = cost;
+        end
+        
+        i= i+1;
+    end
+    %%
+    % This enacts the decay in temperature.
+    T = T*alpha;
+   
+end
+    
+            
+        
+        
+            
+
+##### SOURCE END #####
+--></body></html>

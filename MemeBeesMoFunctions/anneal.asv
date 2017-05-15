@@ -1,0 +1,88 @@
+%% *anneal: Short-range Direct Search Heuristic used to improve solution*
+%
+% Created on May 12 2017
+%
+% Implementation of simulated annealing algorithm. 
+% Can be used in place of Nelder-Mead for Local Search.
+
+%%                                  *Function I/O*
+%
+% *Input*: 
+% * *oldsolution*: Candidate solution parameters to conduct local search.
+%
+% * *oldcost*: the fitness value of the old solution
+%
+% * *T*: Starting temperature
+%
+% * *alpha*: rate at which temperature decays geometrically
+%
+% * *alphatime*: number of iterations required for each temperature
+%
+% * *T_min*: minimum temparature
+%
+% *Output*: 
+%
+% * *solution* = position co-ordinates of inproved solution
+% * *cost* = fitness of the new solution, outputed to conserve function calls
+%
+% The advantage of this approach is that the entire database does not need to be
+% passed to the function, only the specific solution that needs to be
+% improved.
+
+%% *Parameter Considerations*
+%
+% * alpha will typically be between 0.99 and 0.8
+% * T will usually be 1.00
+% * alpha time can be between 100 and 1000
+% * T_min can be 0.01
+
+
+
+%% *Source Code*
+
+function [oldsolution, oldcost] = anneal(oldsolution, oldcost, T, alpha, T_min, alphatime)
+
+while (T>T_min)
+    i = 1;
+    
+    %%
+    % The algorithm will stop operation when the minimum temperature is reached
+    while (i<=alphatime)
+        p = randperm(length(oldsolution),2);
+        solution = oldsolution;
+        solution(p(1))= oldsolution(p(2));
+        solution(p(2))= oldsolution(p(1));
+        
+        %% 
+        % Generate random neighboring solution from current solution by
+        % swapping 2 variables.
+        
+        cost = objFun(solution);
+        %%
+        % Fitness obtained from an external script for modularity
+        
+        
+        
+        %% *Acceptance Probability Function*
+        % $$ a = e^{\frac{c_{old} - c_{new}}{T}} $$
+        % Chance of switching to new solution. If old cost>new cost, 100% chance
+        
+        ap = exp((oldcost-cost)/T); 
+        
+        if ap>rand()
+            oldsolution = solution;
+            oldcost = cost;
+        end
+        
+        i= i+1;
+    end
+    %%
+    % decay in temperature
+    T = T*alpha;
+   
+end
+    
+            
+        
+        
+            

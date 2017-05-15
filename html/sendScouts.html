@@ -1,0 +1,152 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SendScouts: Generation of New Candidate Solutions for "Lost" Solutions</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-12"><meta name="DC.source" content="sendScouts.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><b>SendScouts: Generation of New Candidate Solutions for "Lost" Solutions</b></h1><!--introduction--><p>Solutions that have reached the scouting limit, or have not improved in a certain number of generations, are said to be "lost". In order to maintain the flow of program and ensure smooth operation of algorithm, we must replace lost solutions with new solutions. We generate these new solutions using the formula given below. We use the same code as <b>init</b> to ensure we are not creating "blindspots" in our solution space.</p><p>Created on May 12, 2017 By Parsa Beheshti</p><p>From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global Optimization" by <i>Fister et al</i>.</p><p><a href="runMB.html">Back to Main Method</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function I/O</a></li><li><a href="#2">Source Code</a></li></ul></div><h2>Function I/O<a name="1"></a></h2><p><b>Input:</b></p><div><ul><li><b>solutionDB</b>, <b>objValDB</b>: data structure to be updated with the new      candidate solutions.</li><li><b>upperBound</b>, <b>lowerBound</b>:required to implement functionality of      equation,</li></ul></div><p><img vspace="5" hspace="5" src="eq1.PNG" alt=""> </p><div><ul><li><b>numScouted</b>: Index of solutions that will be replaced.</li></ul></div><p><b>Output:</b></p><div><ul><li><b>solutionDB</b>, <b>objValDB</b>: Updated data structures.</li></ul></div><h2>Source Code<a name="2"></a></h2><pre class="codeinput"><span class="keyword">function</span> [solutionDB, objValDB] = sendScouts (solutionDB, objValDB, numScouted, upperBound, lowerBound)
+</pre><p>Finds the indices of candidate solutions who have reached or exceeded the scouting limit.</p><pre class="codeinput">    newPoints = find(numScouted);
+</pre><p>Creates a list of a random(0,1) with one random for each item in <i>newPoints</i>.</p><pre class="codeinput">    randoms = rand(length(newPoints),1);
+
+    r = 0;
+</pre><p>Assigns new candidate solutions to the indexes who are listed in <i>newPoints</i>.</p><pre class="codeinput">    <span class="keyword">for</span> i = newPoints
+        r = r + 1;
+        solutionDB(i).params = ((upperBound-lowerBound) * randoms(r)) + lowerBound;
+
+        objValDB(i).objVal = 0;
+        objValDB(i).scouted = 0;
+
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p><a href="runMB.html">Back to Main Method</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% *SendScouts: Generation of New Candidate Solutions for "Lost" Solutions*
+%
+% Solutions that have reached the scouting limit, or have not improved in a
+% certain number of generations, are said to be "lost". In order to maintain
+% the flow of program and ensure smooth operation of algorithm, we must
+% replace lost solutions with new solutions. We generate these new
+% solutions using the formula given below. We use the same code as *init*
+% to ensure we are not creating "blindspots" in our solution space.
+%
+% Created on May 12, 2017
+% By Parsa Beheshti
+%
+% From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global
+% Optimization" by _Fister et al_.
+%
+% <runMB.html Back to Main Method>
+%%                             Function I/O
+% *Input:*
+%    
+% 
+% * *solutionDB*, *objValDB*: data structure to be updated with the new
+%      candidate solutions.
+% * *upperBound*, *lowerBound*:required to implement functionality of
+%      equation,
+%
+% <<eq1.PNG>>
+% 
+% * *numScouted*: Index of solutions that will be replaced. 
+%
+% *Output:*
+% 
+% * *solutionDB*, *objValDB*: Updated data structures. 
+%
+%
+%%                             Source Code
+    
+function [solutionDB, objValDB] = sendScouts (solutionDB, objValDB, numScouted, upperBound, lowerBound)
+    
+%%
+% Finds the indices of candidate solutions who have reached or exceeded the
+% scouting limit.
+    newPoints = find(numScouted);
+    
+%%
+% Creates a list of a random(0,1) with one random for each item in
+% _newPoints_.
+
+    randoms = rand(length(newPoints),1);
+    
+    r = 0;
+    
+%% 
+% Assigns new candidate solutions to the indexes who are listed in
+% _newPoints_.
+
+    for i = newPoints
+        r = r + 1;
+        solutionDB(i).params = ((upperBound-lowerBound) * randoms(r)) + lowerBound;
+       
+        objValDB(i).objVal = 0; 
+        objValDB(i).scouted = 0;
+        
+    end
+end
+%%
+% <runMB.html Back to Main Method>
+##### SOURCE END #####
+--></body></html>

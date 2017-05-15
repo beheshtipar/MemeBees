@@ -1,0 +1,224 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Project " MemeBees "</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-15"><meta name="DC.source" content="runMB.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><b>Project</b> <b>" <i>MemeBees</i> "</b></h1><!--introduction--><p>A Matlab adaptation of the algorithm from article "Memetic Artificial Bee Colony Algorithm for Large-Scale Global Optimization" by <i>Fister et al</i>.</p><p>Created on May 10, 2017</p><p>A collaborative effort by Parsa Beheshti and Muhammad Asif</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Run Constants</a></li><li><a href="#2">Upper and Lower Bounds</a></li><li><a href="#3"><a href="init.html">Initialization</a></a></li><li><a href="#4">Program Loop</a></li><li><a href="#5"><a href="sendEmployedBees.html">SendEmployedBees: Stochastic Long-Distance Exploration</a></a></li><li><a href="#6"><a href="sendOnlookerBees.html">SendOnlookerBees: Stochastic Moderate-Distance Exploration</a></a></li><li><a href="#7">Global Best</a></li><li><a href="#8"><a href="localImproveBestBee.html">LocalImproveBestBee</a></a></li><li><a href="#9"><a href="sendScouts.html">SendScouts</a></a></li><li><a href="#13">Solution Display</a></li></ul></div><h2>Run Constants<a name="1"></a></h2><p>A prompt menu opens, asking the user to enter some constsnts that will be used throughout the algorithm:</p><div><ul><li><b>Number of Bees</b></li><li><b>Number of Parameters</b></li><li><b>Crossover Probability <i>CR</i></b></li><li><b>Local Search <i>ratio</i></b></li><li><b>Scout Limit</b></li><li><b>Maximum Number of Function Evaluations <i>FE</i></b></li></ul></div><pre class="codeinput">prompt = {<span class="string">'Enter number of bees:'</span>,<span class="string">'Enter number of parameters:'</span>,<span class="string">'Enter CR:'</span>, <span class="string">'Enter Search Ratio: '</span>, <span class="string">'Enter Scout Limit: '</span>, <span class="string">'Enter maximum number of FE: '</span>};
+dlg_title = <span class="string">'Algorithm Constants'</span>;
+num_lines = 1;
+
+const = inputdlg(prompt,dlg_title,num_lines);
+const = str2double(const);
+</pre><h2>Upper and Lower Bounds<a name="2"></a></h2><p>The bounds of the search are not prompted to be changed, and so much be edited before starting the algorithm. Enter parameters in order as row vectors.</p><pre class="codeinput">upperBound = [];
+
+lowerBound = [];
+</pre><h2><a href="init.html">Initialization</a><a name="3"></a></h2><p>Calls the <b>init</b> function to obtain the intial candidate solution set.</p><pre class="codeinput">[solutionDB, objValDB, fitnessDiv] = init(const(1), const(2), upperBound, lowerBound);
+</pre><h2>Program Loop<a name="4"></a></h2><p>This loop runs the algorithm for a number of generations equal to the maximum FE value entered in the prompt menu earlier.</p><p><i><b>globalBest</b></i> is pre-allocated so the values are not lost.</p><pre class="codeinput">globalBest = {};
+
+<span class="keyword">for</span> i=1:const(6)
+</pre><h2><a href="sendEmployedBees.html">SendEmployedBees: Stochastic Long-Distance Exploration</a><a name="5"></a></h2><pre class="codeinput">    [solutionDB, objValDB] = sendEmployedBees(solutionDB, objValDB, const(3));
+</pre><h2><a href="sendOnlookerBees.html">SendOnlookerBees: Stochastic Moderate-Distance Exploration</a><a name="6"></a></h2><pre class="codeinput">    [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, const(3));
+</pre><h2>Global Best<a name="7"></a></h2><p>The following two lines stores the global best at any given generation. Once the main while loop ends, it will output the index, parameters, and value of the best solution it has found.</p><pre class="codeinput">    indexGlobal = find(min([objValDB.objVal]));
+
+    globalBest = {[solutionDB(indexGlobal).params], objValDB(indexGlobal).objVal};
+</pre><h2><a href="localImproveBestBee.html">LocalImproveBestBee</a><a name="8"></a></h2><p>Given the search ratio, <b>localImproveBestBee</b> will run based on a ratio of overall runs, and is triggered with a modulus operator to track the ratio. Within the function, depending on the fitness of solution diversity, an explorative or exploitative method will be used to locally optimize solutions.</p><pre class="codeinput">    <span class="keyword">if</span> mod(i,const(4)) == 0
+        [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, objValDB, fitnessDiv);
+    <span class="keyword">end</span>
+</pre><h2><a href="sendScouts.html">SendScouts</a><a name="9"></a></h2><p>Checks to see if any of the candidate solutions have met or exceeded the scouting limit, returns a binary matrix where 1's are positions that have met the condition of the inequality.</p><pre class="codeinput">    numScouted = [objValDB.scouted] &gt;= const(5);
+</pre><p><b>needNewPoints</b> returns a value of 1 if there is at least one solution that has reached the scouting limit; This is the trigger condition for <b>sendScout</b> in order to ensure new solutions are only assigned to candidates when they violate their scouting limit.</p><pre class="codeinput">    needNewPoints = size(find(newScouts),1) ~= 0;
+
+    <span class="keyword">if</span> needNewPoints
+        [solutionDB, objValDB] = sendScouts(solutionDB, objValDB, numScouted, upperBound, lowerBound);
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><h2>Solution Display<a name="13"></a></h2><p>The following displays the solution the algorithm has determined to be the best solution out of all candidate solutions.</p><pre class="codeinput">disp(<span class="string">'- - - - - - - - - - - - - '</span>)
+disp(<span class="string">'||                      ||'</span>)
+disp(<span class="string">'||    Solution Found    ||'</span>)
+disp(<span class="string">'||                      ||'</span>)
+disp(<span class="string">'- - - - - - - - - - - - - '</span>)
+fprintf(<span class="string">'\n'</span>)
+disp([<span class="string">'Best objective value found: '</span>, num2str(globalBest{1,2})])
+disp(<span class="string">' '</span>)
+disp(<span class="string">'Corresponding Candidate Solution:'</span>)
+disp(<span class="string">' '</span>)
+disp(globalBest{1,1}')
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% *Project* *" _MemeBees_ "*
+% A Matlab adaptation of the algorithm from article
+% "Memetic Artificial Bee Colony Algorithm for Large-Scale Global Optimization" by _Fister et al_. 
+%
+% Created on May 10, 2017
+% 
+% A collaborative effort by Parsa Beheshti and Muhammad Asif
+
+%% Run Constants
+% A prompt menu opens, asking the user to enter some constsnts that will be
+% used throughout the algorithm:
+%
+% * *Number of Bees*
+% * *Number of Parameters*
+% * *Crossover Probability _CR_*
+% * *Local Search _ratio_*
+% * *Scout Limit*
+% * *Maximum Number of Function Evaluations _FE_*
+ 
+prompt = {'Enter number of bees:','Enter number of parameters:','Enter CR:', 'Enter Search Ratio: ', 'Enter Scout Limit: ', 'Enter maximum number of FE: '};
+dlg_title = 'Algorithm Constants';
+num_lines = 1;
+
+const = inputdlg(prompt,dlg_title,num_lines);
+const = str2double(const);
+
+%% Upper and Lower Bounds
+% The bounds of the search are not prompted to be changed, and so much be
+% edited before starting the algorithm. Enter parameters in order as row
+% vectors.
+
+upperBound = []; 
+
+lowerBound = []; 
+
+%% <init.html Initialization>
+% Calls the *init* function to obtain the intial candidate solution set.
+[solutionDB, objValDB, fitnessDiv] = init(const(1), const(2), upperBound, lowerBound);
+
+%% Program Loop
+% This loop runs the algorithm for a number of generations equal to the
+% maximum FE value entered in the prompt menu earlier.
+%
+% _*globalBest*_ is pre-allocated so the values are not lost. 
+
+globalBest = {};
+
+for i=1:const(6)
+    %% <sendEmployedBees.html SendEmployedBees: Stochastic Long-Distance Exploration>
+   
+    [solutionDB, objValDB] = sendEmployedBees(solutionDB, objValDB, const(3));
+    %% <sendOnlookerBees.html SendOnlookerBees: Stochastic Moderate-Distance Exploration>
+   
+    [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, const(3));
+
+    %% Global Best
+    % The following two lines stores the global best at any given generation.
+    % Once the main while loop ends, it will output the index, parameters, and
+    % value of the best solution it has found.
+
+    indexGlobal = find(min([objValDB.objVal]));
+
+    globalBest = {[solutionDB(indexGlobal).params], objValDB(indexGlobal).objVal};
+    
+    %% <localImproveBestBee.html LocalImproveBestBee>
+    % Given the search ratio, *localImproveBestBee* will run based on a
+    % ratio of overall runs, and is triggered with a modulus operator to
+    % track the ratio. Within the function, depending on the fitness of
+    % solution diversity, an explorative or exploitative method will be
+    % used to locally optimize solutions.
+    
+    if mod(i,const(4)) == 0
+        [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, objValDB, fitnessDiv);
+    end
+
+    %% <sendScouts.html SendScouts>
+    % Checks to see if any of the candidate solutions have met or exceeded the
+    % scouting limit, returns a binary matrix where 1's are positions that have
+    % met the condition of the inequality.
+    
+    numScouted = [objValDB.scouted] >= const(5);
+    
+    %%
+    % *needNewPoints* returns a value of 1 if there is at least one solution that
+    % has reached the scouting limit; This is the trigger condition for
+    % *sendScout* in order to ensure new solutions are only assigned to candidates when they 
+    % violate their scouting limit.
+    
+    %% 
+    needNewPoints = size(find(newScouts),1) ~= 0;
+
+    if needNewPoints
+        [solutionDB, objValDB] = sendScouts(solutionDB, objValDB, numScouted, upperBound, lowerBound);
+    end
+
+end
+
+%% Solution Display
+% The following displays the solution the algorithm has determined to be the best solution out of all candidate solutions. 
+disp('- - - - - - - - - - - - - ')
+disp('||                      ||')
+disp('||    Solution Found    ||')
+disp('||                      ||')
+disp('- - - - - - - - - - - - - ')
+fprintf('\n')
+disp(['Best objective value found: ', num2str(globalBest{1,2})]) 
+disp(' ')
+disp('Corresponding Candidate Solution:')
+disp(' ')
+disp(globalBest{1,1}')
+
+
+    
+##### SOURCE END #####
+--></body></html>
