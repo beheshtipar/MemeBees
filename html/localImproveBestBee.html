@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>LocalImproveBestBee: Deterministic Short-Distance Exploration of Design Space</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-15"><meta name="DC.source" content="localImproveBestBee.m"><style type="text/css">
+      --><title>LocalImproveBestBee: Deterministic Short-Distance Exploration of Design Space</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-16"><meta name="DC.source" content="localImproveBestBee.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,16 +67,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1><b>LocalImproveBestBee: Deterministic Short-Distance Exploration of Design Space</b></h1><!--introduction--><p>Created on May 11, 2017 By Parsa Beheshti</p><p>From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global Optimization" by <i>Fister et al</i>.</p><p><a href="runMB.html">Back to Main Method</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function I/O</a></li><li><a href="#2">Source Code</a></li></ul></div><h2>Function I/O<a name="1"></a></h2><p><b>Input</b>:</p><div><ul><li><b>solutionDB</b>: Current generation data structure for candidate      solutions.</li></ul></div><div><ul><li><b>objValDB</b>: Current generation data structure for objective function values.</li></ul></div><div><ul><li><b>fitnessDiv</b>: Fitness diversity metric storage matrix.</li></ul></div><p><b>Output</b>:</p><div><ul><li><b>solutionDB</b>, <b>objValDB</b>: Updated data structures for candidate solutions.</li></ul></div><div><ul><li><b>fitnessDiv</b>: Updated fitness diversity matrix.</li></ul></div><h2>Source Code<a name="2"></a></h2><pre class="codeinput"><span class="keyword">function</span> [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, objValDB, fitnessDiv)
-</pre><pre class="codeinput">    objVal = [objValDB.objVal];
-</pre><p>Stores the best, worst, and average objective function values.</p><pre class="codeinput">    fAvg = mean(objVal);
-    fBest = min(objVal);
-    fWorst = max(objVal);
+</pre><pre class="codeinput">    objValues = [objValDB.objVal];
+</pre><p>Stores the best, worst, and average objective function values.</p><pre class="codeinput">    fAvg = mean(objValues);
+    fBest = min(objValues);
+    fWorst = max(objValues);
 </pre><p>The following lines calculate the currentn generation, the standard deviation, and the average of the fitness diversity metric.</p><p>The fitness diversity metric returns a value between 0 and 1 and is given by,</p><p><img vspace="5" hspace="5" src="eq7.PNG" alt=""> </p><pre class="codeinput">    fitnessDiv = [0,fitnessDiv]+ (1 - abs((fAvg - fBest)/(fWorst - fBest)));
 
     sigmaP = std(fitnessDiv);
     muP = mean(fitnessDiv);
 </pre><p>Exponential distribution that coordinates the exploration/exploitation process is given by,</p><p><img vspace="5" hspace="5" src="eq8.PNG" alt=""> </p><pre class="codeinput">    expDist = exp(-(fitnessDiv(length(fitnessDiv)) - muP)/(2*(sigmaP)^2));
-</pre><p>Stores the best candidate solution and its corresponding objective value.</p><pre class="codeinput">    bestSol = {find([objValDB.objVal]==fBest), fBest};
+</pre><p>Stores the best candidate solution and its corresponding objective value.</p><pre class="codeinput">    bestSol = {find(objValues == fBest), fBest};
 </pre><p>Now, we implement the adaptive scheme to balance between both local search algorithms given by,</p><p><img vspace="5" hspace="5" src="eq9.PNG" alt=""> </p><pre class="codeinput">    <span class="keyword">if</span> rand(1,1) &gt; expDist
         <span class="comment">%use NMA</span>
         T= 1;
@@ -132,14 +132,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 %% Source Code
 function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, objValDB, fitnessDiv)
-    objVal = [objValDB.objVal];
+    objValues = [objValDB.objVal];
     
     %%
     % Stores the best, worst, and average objective function values.
     
-    fAvg = mean(objVal);
-    fBest = min(objVal);
-    fWorst = max(objVal);
+    fAvg = mean(objValues);
+    fBest = min(objValues);
+    fWorst = max(objValues);
     
     %%
     % The following lines calculate the currentn generation, the standard
@@ -165,7 +165,7 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
     %%
     % Stores the best candidate solution and its corresponding objective
     % value.
-    bestSol = {find([objValDB.objVal]==fBest), fBest};
+    bestSol = {find(objValues == fBest), fBest};
    
     %%
     % Now, we implement the adaptive scheme to balance between both local

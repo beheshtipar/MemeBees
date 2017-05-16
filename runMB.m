@@ -52,16 +52,6 @@ for i=1:const(6)
     %% <sendOnlookerBees.html SendOnlookerBees: Stochastic Moderate-Distance Exploration>
    
     [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, const(3));
-
-    %% Global Best
-    % The following two lines stores the global best at any given generation.
-    % Once the main while loop ends, it will output the index, parameters, and
-    % value of the best solution it has found.
-
-    indexGlobal = find(min([objValDB.objVal]));
-
-    globalBest = {[solutionDB(indexGlobal).params], objValDB(indexGlobal).objVal};
-    
     %% <localImproveBestBee.html LocalImproveBestBee>
     % Given the search ratio, *localImproveBestBee* will run based on a
     % ratio of overall runs, and is triggered with a modulus operator to
@@ -94,6 +84,14 @@ for i=1:const(6)
     end
 
 end
+
+%% Global Best
+% The following two lines stores the global best at any given generation.
+% Once the main while loop ends, it will output the index, parameters, and
+% value of the best solution it has found.
+indexGlobal = find(min([objValDB.objVal]));
+
+globalBest = {[solutionDB(indexGlobal).params], objValDB(indexGlobal).objVal};
 
 %% Solution Display
 % The following displays the solution the algorithm has determined to be the best solution out of all candidate solutions. 

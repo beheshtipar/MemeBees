@@ -85,7 +85,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     decMatOrig = decMatV ~= 1;
 
     trial = (decMatV .* v) + (decMatOrig .* sampleData);
-</pre><p>Evaluation of objective function using trial and current generation data set.</p><pre class="codeinput">    [trialVal, origVal] = objFunc(trial, sampleData);
+</pre><p>Evaluation of objective function using trial and current generation data set.</p><pre class="codeinput">    [trialVal] = objFunc(trial);
+    [origVal] = objFunc(trial);
 </pre><h2>condition for fitness - CHANGE<a name="9"></a></h2><pre class="codeinput">    decisionFit = trialVal &lt;= origVal;
 </pre><p>Computing next generation using data from fitness conditions.</p><pre class="codeinput">    decisionFit = repmat(decisionFit,1,size(solutionDB(1).params,2));
     decisionOrig = decisionFit ~= 1;
@@ -184,7 +185,8 @@ function [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, CR)
     % Evaluation of objective function using trial and current generation
     % data set.
     
-    [trialVal, origVal] = objFunc(trial, sampleData);
+    [trialVal] = objFunc(trial);
+    [origVal] = objFunc(trial);
     
     %% condition for fitness - CHANGE
     

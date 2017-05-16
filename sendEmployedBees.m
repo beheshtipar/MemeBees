@@ -63,7 +63,9 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     % function that will be evaluated using column data from sampleData.*
 
     
-    [trialVal, origVal] = objFunc(trial, sampleData); 
+    [trialVal] = objFunc(trial);
+    [origVal] = objFunc(trial);
+    
     %%
     % Assuming a minimum value is desired for each case, this returns a 1
     % for each case that the trial solution presents a better fitness.

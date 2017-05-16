@@ -1,6 +1,6 @@
-function [trialVal, origVal] = objFunc(trialData, origData)
+function [outVal] = objFunc(inData)
     
-    [trialVal, origVal] = deal(zeros(length(trialData),1));
+    outVal = zeros(length(inData),1);
     
      
     

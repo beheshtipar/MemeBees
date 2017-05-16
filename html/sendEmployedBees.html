@@ -79,7 +79,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     decMatOrig = detMatV ~= 1;
 </pre><p>After that, we extract a matrix of all the candidate solutions from <b>solutionDB</b>.</p><pre class="codeinput">    sampleData = reshape([solutionDB.params], size(solutionDB(1).params,2), length(solutionDB))';
 </pre><p>Trial solution created from crossover comparison between mutated and initial solution.</p><pre class="codeinput">    trial = (decMatV .* v) + (decMatOrig .* sampleData);
-</pre><p>Evaluates the objective functions given parameters from each bee using data from trial solutions and current generation (original) solution.</p><p><b><i>objFunc</i> must be defined in a separate script containing the objective function that will be evaluated using column data from sampleData.</b></p><pre class="codeinput">    [trialVal, origVal] = objFunc(trial, sampleData);
+</pre><p>Evaluates the objective functions given parameters from each bee using data from trial solutions and current generation (original) solution.</p><p><b><i>objFunc</i> must be defined in a separate script containing the objective function that will be evaluated using column data from sampleData.</b></p><pre class="codeinput">    [trialVal] = objFunc(trial);
+    [origVal] = objFunc(trial);
 </pre><p>Assuming a minimum value is desired for each case, this returns a 1 for each case that the trial solution presents a better fitness.</p><pre class="codeinput">    decisionFit = trialVal &lt;= origVal;
 </pre><p>Horizontal stacking of column vector to address matrix dimension compatibility.</p><pre class="codeinput">    decisionFit = repmat(decisionFit,1,size(solutionDB(1).params,2));
     decisionOrig = decisionFit ~= 1;
@@ -126,7 +127,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % * *objValDB*: Next generation data structure for candidate solutions
 
 %% Source Code
-
 function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     %%
     % Equation in the mutation loop given by,
@@ -166,7 +166,9 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     % function that will be evaluated using column data from sampleData.*
 
     
-    [trialVal, origVal] = objFunc(trial, sampleData); 
+    [trialVal] = objFunc(trial);
+    [origVal] = objFunc(trial);
+    
     %%
     % Assuming a minimum value is desired for each case, this returns a 1
     % for each case that the trial solution presents a better fitness.

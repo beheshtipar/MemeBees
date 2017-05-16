@@ -27,14 +27,14 @@
 
 %% Source Code
 function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, objValDB, fitnessDiv)
-    objVal = [objValDB.objVal];
+    objValues = [objValDB.objVal];
     
     %%
     % Stores the best, worst, and average objective function values.
     
-    fAvg = mean(objVal);
-    fBest = min(objVal);
-    fWorst = max(objVal);
+    fAvg = mean(objValues);
+    fBest = min(objValues);
+    fWorst = max(objValues);
     
     %%
     % The following lines calculate the currentn generation, the standard
@@ -60,7 +60,7 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
     %%
     % Stores the best candidate solution and its corresponding objective
     % value.
-    bestSol = {find([objValDB.objVal]==fBest), fBest};
+    bestSol = {find(objValues == fBest), fBest};
    
     %%
     % Now, we implement the adaptive scheme to balance between both local

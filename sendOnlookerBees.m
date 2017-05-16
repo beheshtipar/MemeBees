@@ -78,7 +78,8 @@ function [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, CR)
     % Evaluation of objective function using trial and current generation
     % data set.
     
-    [trialVal, origVal] = objFunc(trial, sampleData);
+    [trialVal] = objFunc(trial);
+    [origVal] = objFunc(trial);
     
     %% condition for fitness - CHANGE
     
