@@ -24,7 +24,6 @@
 % * *objValDB*: Next generation data structure for candidate solutions
 
 %% Source Code
-
 function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     %%
     % Equation in the mutation loop given by,

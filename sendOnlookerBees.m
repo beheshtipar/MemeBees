@@ -1,7 +1,7 @@
 %% *SendOnlookerBees: Stochastic Moderate-Distance Exploration of Design Space*
+%
 % Created on May 9, 2017
 % By Parsa Beheshti
-%
 %
 % From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global
 % Optimization" by _Fister et al_.

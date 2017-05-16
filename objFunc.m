@@ -1,5 +1,6 @@
 function [trialVal, origVal] = objFunc(trialData, origData)
-    [trialVal origVal] = deal(zeros(length(solutionDB),1));
+    
+    [trialVal, origVal] = deal(zeros(length(trialData),1));
     
      
     
