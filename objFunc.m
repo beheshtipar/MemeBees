@@ -115,10 +115,11 @@ function [outVal] = objFunc(inData)
             -> [objective Function] ->
         {output as singular value to respective data matrix}
     
-        % For testing purposes
-       % for i=1:length(X(1,:))
-            %outval(i,1) = func(X(i,:))
-         %end
+    % For testing purposes
+    outVal = zeros(length(inData(:,1)),1);
+    for i=1:length(inData(:,1))
+            outVal(i,1) = func(inData(i,:));
+    end
     
         
     %}
