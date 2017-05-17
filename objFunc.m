@@ -7,7 +7,7 @@
 %
 % Test Functions found on: 
 % Surjanovic, S. & Bingham, D. (2013). Virtual Library of Simulation Experiments: Test Functions and Datasets. Retrieved May 17, 2017, from http://www.sfu.ca/~ssurjano. 
-
+%comment
 %% *Function I/O*
 %
 % *Input*:
