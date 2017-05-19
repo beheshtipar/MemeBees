@@ -8,6 +8,7 @@
 %%                                  *Function I/O*
 %
 % *Input*: 
+% 
 % * *oldsolution*: Candidate solution parameters to conduct local search.
 %
 % * *oldcost*: The objective value of the old solution.-
@@ -24,7 +25,7 @@
 %
 % * *oldsolution* = Improved candidate solutions.
 % 
-% * *cost* = fitness of the new solution, outputed to conserve function calls
+% * *oldcost* = fitness of the new solution, outputed to conserve function calls
 %
 % The advantage of this approach is that the entire database does not need to be
 % passed to the function, only the specific solution that needs to be
