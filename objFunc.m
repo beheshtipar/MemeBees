@@ -21,9 +21,9 @@
 
 %% *Source Code*
 
-
-
-%%
+function [outVal] = objFunc(inData)
+    
+    %%
 % *Test Functions*:
 
 %%
@@ -36,7 +36,7 @@
 % Global minimim 2^(2^i-2/(2^i))
 
 %n-variable Rosenbrock Generalization function % VALLEY
-% func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end-1)).^2, 2);
+func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end-1)).^2, 2);
 
 %%
 % Multi Modal Functions: 
@@ -95,34 +95,14 @@
 %func = @(X) sum(X.^2)+(sum(0.5.*(1:length(X)).*X)))^2+(sum(0.5.*(1:length(X)).*X)))^4;
 %xi is in the domain [-5 10]
 
-
-%% *Code*
-
-
-function [outVal] = objFunc(inData)
     
     
-    outVal = zeros(length(inData),1);
     
      
-    
-    
-    
-    %{ 
-        %here, must go
-    
-       % {input parameters for each case} 
-            %-> [objective Function] ->
-        %{output as singular value to respective data matrix}
-    
-    % For testing purposes
-    %outVal = zeros(length(inData(:,1)),1);
-    %for i=1:length(inData(:,1))
-           % outVal(i,1) = func(inData(i,:));
-    %end
-    
-        
-    %}
+    outVal = zeros(length(inData(:,1)),1);
+    for i=1:length(inData(:,1))
+            outVal(i,1) = func(inData(i,:));
+    end
  
 
 

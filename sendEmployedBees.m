@@ -25,15 +25,20 @@
 
 %% Source Code
 function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
+    numBees = length(solutionDB); 
+    numParam = length(solutionDB(1).params);
+
     %%
     % Equation in the mutation loop given by,
     % 
     % <<eq2.PNG>>
+    
+    
     v = zeros(numBees,numParam);
     
     for i=1:numBees 
-        randChoice = randSample(numBees,3);
-        v(i,:) = solutionDB.params(randChoice(1,1),:) + ( solutionDB.params(randChoice(1,2),:) - solutionDB.params(randChoice(1,3),:));
+        randChoice = randsample(numBees,3);
+        v(i,:) = solutionDB(randChoice(1)).params + solutionDB(randChoice(2)).params - solutionDB(randChoice(3)).params;
     end
      
     %% 
@@ -43,7 +48,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     randomMatrix = rand(length(solutionDB), size(solutionDB(1).params,2));
     
     decMatV = randomMatrix <= CR ; 
-    decMatOrig = detMatV ~= 1;
+    decMatOrig = decMatV ~= 1;
     
     %%
     % After that, we extract a matrix of all the candidate solutions from
@@ -85,7 +90,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     nextGenP = (trial .* decisionFit) + (sampleData .* decisionOrig);
     %%
     % Next generation of objective function values
-    nextGenV = (trialVal .* decisionFit(:,1)) + ( sampleData .* decisionOrig(:,1));
+    nextGenV = (trialVal .* decisionFit(:,1)) + ( origVal .* decisionOrig(:,1));
         %%
         % Assigns the next generation of parameters and objective function's value
         %

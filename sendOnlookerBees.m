@@ -44,24 +44,24 @@ function [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, CR)
     % <<eq5.PNG>>
     % 
     
-    q = ( [objValDB.objVal]' - repmat(valMax, length(solutionDB), 1) ) ./ repmat(valMin - valMax, length(solutionDB, 1),1);
+    q = ( [objValDB.objVal]' - repmat(valMax, length(solutionDB), 1) ) ./ repmat(valMin - valMax, length(solutionDB),1);
     
     randMat = repmat(rand(1,1),length(objValDB),1);
     
     decQ = q > randMat;
     decO = decQ ~= 1;
     
-    sampleData = reshape([solutionDB.params], size(solutionDB(1).params,2), length(solutionDB))';
+    sampleData = reshape([solutionDB.params], size(solutionDB(1).params,2), length(solutionDB))'; 
     
-    r1r2 = randi([1 length(objValDB)]);
+    r1r2 = randsample(length(objValDB), 2);
     
     %%
     % Vectorized version of mutator equation,
     %
     % <<eq6.PNG>> 
     
-    v = sampleData + repmat(sampleData(indexMin,:) - sampleData, length(objValDB),size(sampleData,2)) + repmat(sampleData(r1r2(1),:) - sampleData(r1r2(2),:),length(objValDB),size(sampleData,2));
-    v = decQ .* v + decO .* sampleData;
+    v = sampleData + repmat(sampleData(indexMin,:), size(sampleData,1),1)+ repmat(sampleData(r1r2(1),:)-sampleData(r1r2(2),:), size(sampleData,1),1);
+    v= repmat(decQ, 1, size(solutionDB(1).params,2)).*v + repmat(decO,1,size(solutionDB(1).params,2)) .* sampleData;
     
     %% 
     % Vectorized crossover probability calculation, and creation of trial
@@ -95,7 +95,7 @@ function [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, CR)
     % Refer to SendEmployedBees for explanation on matrices below.
     
     nextGenP = (trial .* decisionFit) + (sampleData .* decisionOrig);
-    nextGenV = (trialVal .* decisionFit(:,1)) + ( sampleData .* decisionOrig(:,1));
+    nextGenV = (trialVal .* decisionFit(:,1)) + (origVal.* decisionOrig(:,1));
     
     %%
     % Changes the candidate solution database to the new generation of

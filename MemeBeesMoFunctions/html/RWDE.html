@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>RWDE: Random Walk with Direction Exploitation</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-15"><meta name="DC.source" content="RWDE.m"><style type="text/css">
+      --><title>RWDE: Random Walk with Direction Exploitation</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-23"><meta name="DC.source" content="RWDE.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1><b>RWDE: Random Walk with Direction Exploitation</b></h1><!--introduction--><p>Created on May 11 2017 By Muhammad Asif</p><p>Random Walk with Direction Exploitation(RWDE) Second Deterministic Short-distance exploration, used to find the local optimum around the best solution</p><p>From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global Optimization" by Fister et al.</p><p>Inspired from Engineering Optimization: Theory and Practice by SS Rao</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1"><b>Function I/O</b></a></li><li><a href="#2">Source Code</a></li><li><a href="#5">Main Loop</a></li></ul></div><h2><b>Function I/O</b><a name="1"></a></h2><p><b>Input</b>:</p><div><ul><li><b>Solution</b>: The position of the candidate solution to be improved. Passed as a vector.</li></ul></div><div><ul><li><b>dim</b>: The number of variables</li></ul></div><div><ul><li><b>step</b>: The Starting Random Walk Distance</li></ul></div><div><ul><li><b>minstep</b>: Minimum walking distance</li></ul></div><div><ul><li><b>N</b>: Maximum Number of iterations with no improvement before switching to a smaller step size</li></ul></div><p><b>Output</b>:</p><div><ul><li><b>newSolution</b>: The improved solution's position. Passed as a 1bydim vector</li></ul></div><div><ul><li>*Fitness is the fitness value of the new solution</li></ul></div><h2>Source Code<a name="2"></a></h2><pre class="codeinput"><span class="keyword">function</span> [newSolution, newObjVal] = RWDE(oldSolution, dim, step, minStep, N )
+  </style></head><body><div class="content"><h1><b>RWDE: Random Walk with Direction Exploitation</b></h1><!--introduction--><p>Created on May 11 2017 By Muhammad Asif</p><p>Random Walk with Direction Exploitation(RWDE) Second Deterministic Short-distance exploration, used to find the local optimum around the best solution</p><p>From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global Optimization" by Fister et al.</p><p>Inspired from Engineering Optimization: Theory and Practice by SS Rao</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1"><b>Function I/O</b></a></li><li><a href="#2">Source Code</a></li><li><a href="#5">Main Loop</a></li></ul></div><h2><b>Function I/O</b><a name="1"></a></h2><p><b>Input</b>:</p><div><ul><li><b>Solution</b>: The position of the candidate solution to be improved. Passed as a vector.</li></ul></div><div><ul><li><b>dim</b>: The number of variables</li></ul></div><div><ul><li><b>step</b>: The Starting Random Walk Distance</li></ul></div><div><ul><li><b>minstep</b>: Minimum walking distance</li></ul></div><div><ul><li><b>N</b>: Maximum Number of iterations with no improvement before switching to a smaller step size</li></ul></div><p><b>Output</b>:</p><div><ul><li><b>newSolution</b>: The improved solution's position. Passed as a 1bydim vector</li></ul></div><div><ul><li>*Fitness is the fitness value of the new solution</li></ul></div><h2>Source Code<a name="2"></a></h2><pre class="codeinput"><span class="keyword">function</span> [newSolution, newObjVal] = RWDE(oldSolution, dim, step, minStep, N)
 </pre><pre class="codeinput">xPrev = oldSolution; <span class="comment">%Initial Guess</span>
 fPrev = objFunc(xPrev); <span class="comment">%Initial Function Value</span>
 </pre><p>Initializing diagnostic variables.</p><pre class="codeinput">fcalls=0;
@@ -110,7 +110,7 @@ fHistory = [];
 </pre><p>Return variables back to method call.</p><pre class="codeinput">newSolution= xPrev;
 newObjVal = fPrev;
 </pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% *RWDE: Random Walk with Direction Exploitation*
 %
@@ -148,7 +148,7 @@ newObjVal = fPrev;
 
 
 %% Source Code
-function [newSolution, newObjVal] = RWDE(oldSolution, dim, step, minStep, N )
+function [newSolution, newObjVal] = RWDE(oldSolution, dim, step, minStep, N)
 
 
 xPrev = oldSolution; %Initial Guess

@@ -81,7 +81,7 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
         step = 1;
         minStep = 0.05;
         N = 1000;
-        [newSol, newObjVal] = RWDE(solutionDB(bestSol(1,1)).params, length(solutionDB(bestSol(1,1)).params), step, minStep, N);
+        [newSol, newObjVal] = RWDE(solutionDB(bestSol{1}).params, length(solutionDB(bestSol{1}).params), step, minStep, N);
     end
 
     %%
@@ -90,7 +90,7 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
     %
     % If so, it assigns it to that index, otherwise adds one to the scout
     % counter to show it was not a better solution.
-    if newObjVal < bestSol(1,2)
+    if newObjVal < [bestSol{2}]
         solutionDB(bestSol(1,1)).params = newSol;
         objValDB(bestSol(1,1)).objVal = newObjVal;
         objValDB(bestSol(1,1)).scouted = 0;

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>objFunc</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-17"><meta name="DC.source" content="objFunc.m"><style type="text/css">
+      --><title>objFunc</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-23"><meta name="DC.source" content="objFunc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,13 +66,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1><b>objFunc</b></h1><!--introduction--><p>Created May 16 2017.</p><p>By Parsa Behestri and Muhammad Asif.</p><p>This function evaluates the objective/cost function to be optimized.</p><p>Test Functions found on: Surjanovic, S. &amp; Bingham, D. (2013). Virtual Library of Simulation Experiments: Test Functions and Datasets. Retrieved May 17, 2017, from <a href="http://www.sfu.ca/~ssurjano">http://www.sfu.ca/~ssurjano</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1"><b>Function I/O</b></a></li><li><a href="#2"><b>Source Code</b></a></li><li><a href="#8"><b>Code</b></a></li></ul></div><h2><b>Function I/O</b><a name="1"></a></h2><p><b>Input</b>:</p><div><ul><li><b>inData</b>: n-by-m matrix with m-variables describing position of n canidate solutions</li></ul></div><p><b>Output</b>:</p><div><ul><li><b>outdata</b>: n-by-1 matrix with one value describing the objective value of n soltuions</li></ul></div><h2><b>Source Code</b><a name="2"></a></h2><p><b>Test Functions</b>:</p><p>Valley Functions: Unimodal functions with a global minimum located in a central valley. The valley itself is easy to find, but finding the global minimum is much harder.</p><pre class="codeinput"><span class="comment">% n-variable Dixon-Price function %VALLEY</span>
+  </style></head><body><div class="content"><h1><b>objFunc</b></h1><!--introduction--><p>Created May 16 2017.</p><p>By Parsa Behestri and Muhammad Asif.</p><p>This function evaluates the objective/cost function to be optimized.</p><p>Test Functions found on: Surjanovic, S. &amp; Bingham, D. (2013). Virtual Library of Simulation Experiments: Test Functions and Datasets. Retrieved May 17, 2017, from <a href="http://www.sfu.ca/~ssurjano">http://www.sfu.ca/~ssurjano</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1"><b>Function I/O</b></a></li><li><a href="#2"><b>Source Code</b></a></li></ul></div><h2><b>Function I/O</b><a name="1"></a></h2><p><b>Input</b>:</p><div><ul><li><b>inData</b>: n-by-m matrix with m-variables describing position of n canidate solutions</li></ul></div><p><b>Output</b>:</p><div><ul><li><b>outdata</b>: n-by-1 matrix with one value describing the objective value of n soltuions</li></ul></div><h2><b>Source Code</b><a name="2"></a></h2><pre class="codeinput"><span class="keyword">function</span> [outVal] = objFunc(inData)
+</pre><p><b>Test Functions</b>:</p><p>Valley Functions: Unimodal functions with a global minimum located in a central valley. The valley itself is easy to find, but finding the global minimum is much harder.</p><pre class="codeinput"><span class="comment">% n-variable Dixon-Price function %VALLEY</span>
 <span class="comment">%func = @(X) (X(1,1)-1)^2+sum( 2:1:length(X).*(2.*X(2:length(X))-X(1:(length(X)-1))).^2);</span>
 <span class="comment">% xi is in the domain [-10 10]</span>
 <span class="comment">% Global minimim 2^(2^i-2/(2^i))</span>
 
 <span class="comment">%n-variable Rosenbrock Generalization function % VALLEY</span>
-<span class="comment">% func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end-1)).^2, 2);</span>
+func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end-1)).^2, 2);
 </pre><p>Multi Modal Functions: Functions with multiple local minima. Extremely difficult for hill-walking algorithms</p><pre class="codeinput"><span class="comment">%n-variable Ackley function % MULTI-MODAL</span>
 <span class="comment">%a=20;</span>
 <span class="comment">%b=0.2;</span>
@@ -116,36 +117,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="comment">% n-variable Zakharov function %PLATE</span>
 <span class="comment">%func = @(X) sum(X.^2)+(sum(0.5.*(1:length(X)).*X)))^2+(sum(0.5.*(1:length(X)).*X)))^4;</span>
 <span class="comment">%xi is in the domain [-5 10]</span>
-</pre><h2><b>Code</b><a name="8"></a></h2><pre class="codeinput"><span class="keyword">function</span> [outVal] = objFunc(inData)
-
-
-    outVal = zeros(length(inData),1);
 
 
 
 
 
-<span class="comment">    %{
-</span><span class="comment">        here, must go
-</span><span class="comment">
-</span><span class="comment">        {input parameters for each case}
-</span><span class="comment">            -&gt; [objective Function] -&gt;
-</span><span class="comment">        {output as singular value to respective data matrix}
-</span><span class="comment">
-</span><span class="comment">
-</span><span class="comment">    %}
-</span>
-<span class="comment">% For testing purposes</span>
-<span class="comment">% for i=1:length(X(1,:))</span>
-    <span class="comment">%outval(i,1) = func(X(i,:))</span>
-<span class="comment">%end</span>
-
-
-
-
-
-
-<span class="keyword">end</span>
+    outVal = zeros(length(inData(:,1)),1);
+    <span class="keyword">for</span> i=1:length(inData(:,1))
+            outVal(i,1) = func(inData(i,:));
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% *objFunc*
@@ -157,7 +138,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %
 % Test Functions found on: 
 % Surjanovic, S. & Bingham, D. (2013). Virtual Library of Simulation Experiments: Test Functions and Datasets. Retrieved May 17, 2017, from http://www.sfu.ca/~ssurjano. 
-
 %% *Function I/O*
 %
 % *Input*:
@@ -172,9 +152,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 %% *Source Code*
 
-
-
-%%
+function [outVal] = objFunc(inData)
+    
+    %%
 % *Test Functions*:
 
 %%
@@ -187,7 +167,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % Global minimim 2^(2^i-2/(2^i))
 
 %n-variable Rosenbrock Generalization function % VALLEY
-% func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end-1)).^2, 2);
+func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end-1)).^2, 2);
 
 %%
 % Multi Modal Functions: 
@@ -246,33 +226,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %func = @(X) sum(X.^2)+(sum(0.5.*(1:length(X)).*X)))^2+(sum(0.5.*(1:length(X)).*X)))^4;
 %xi is in the domain [-5 10]
 
-
-%% *Code*
-
-
-function [outVal] = objFunc(inData)
     
     
-    outVal = zeros(length(inData),1);
     
      
-    
-    
-    
-    %{ 
-        here, must go
-    
-        {input parameters for each case} 
-            -> [objective Function] ->
-        {output as singular value to respective data matrix}
-    
-        
-    %}
+    outVal = zeros(length(inData(:,1)),1);
+    for i=1:length(inData(:,1))
+            outVal(i,1) = func(inData(i,:));
+    end
  
-% For testing purposes
-% for i=1:length(X(1,:))
-    %outval(i,1) = func(X(i,:))
-%end
+
 
     
     

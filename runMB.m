@@ -16,7 +16,10 @@
 % * *Local Search _ratio_*
 % * *Scout Limit*
 % * *Maximum Number of Function Evaluations _FE_*
- 
+
+
+clear all;
+
 prompt = {'Enter number of bees:','Enter number of parameters:','Enter CR:', 'Enter Search Ratio: ', 'Enter Scout Limit: ', 'Enter maximum number of FE: '};
 dlg_title = 'Algorithm Constants';
 num_lines = 1;
@@ -29,9 +32,9 @@ const = str2double(const);
 % edited before starting the algorithm. Enter parameters in order as row
 % vectors.
 
-upperBound = []; 
+upperBound = [5 5]; 
 
-lowerBound = []; 
+lowerBound = [-5 -5]; 
 
 %% <init.html Initialization>
 % Calls the *init* function to obtain the intial candidate solution set.
@@ -77,7 +80,7 @@ for i=1:const(6)
     % violate their scouting limit.
     
     %% 
-    needNewPoints = size(find(newScouts),1) ~= 0;
+    needNewPoints = size(find(numScouted),1) ~= 0;
 
     if needNewPoints
         [solutionDB, objValDB] = sendScouts(solutionDB, objValDB, numScouted, upperBound, lowerBound);
