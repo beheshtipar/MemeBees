@@ -79,7 +79,7 @@ function [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, CR)
     % data set.
     
     [trialVal] = objFunc(trial);
-    [origVal] = objFunc(trial);
+    [origVal] = objFunc(sampleData);
     
     %% condition for fitness - CHANGE
     
@@ -113,7 +113,7 @@ function [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, CR)
         % This is to track the improvement of a solution over _n_ number of
         % generations, where n is the scouted limit given by the user in
         % *runMB*.
-        if objValDB(i).objVal >= nextGenV(i)
+        if objValDB(i).best >= nextGenV(i)
             objValDB(i).best = nextGenV(i);
             objValDB(i).scouted = 0;
         else

@@ -32,9 +32,9 @@ const = str2double(const);
 % edited before starting the algorithm. Enter parameters in order as row
 % vectors.
 
-upperBound = [5 5]; 
+upperBound = 5.*ones(1, const(2));
 
-lowerBound = [-5 -5]; 
+lowerBound = -5.*ones(1, const(2));
 
 %% <init.html Initialization>
 % Calls the *init* function to obtain the intial candidate solution set.
@@ -49,10 +49,10 @@ lowerBound = [-5 -5];
 globalBest = {};
 
 for i=1:const(6)
-    %% <sendEmployedBees.html SendEmployedBees: Stochastic Long-Distance Exploration>
+    %% <sendEmployedBees.html .: Stochastic Long-Distance Exploration>
    
     [solutionDB, objValDB] = sendEmployedBees(solutionDB, objValDB, const(3));
-    %% <sendOnlookerBees.html SendOnlookerBees: Stochastic Moderate-Distance Exploration>
+    %% <sendOnlook.rBees.html SendOnlookerBees: Stochastic Moderate-Distance Exploration>
    
     [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, const(3));
     %% <localImproveBestBee.html LocalImproveBestBee>
@@ -85,6 +85,7 @@ for i=1:const(6)
     if needNewPoints
         [solutionDB, objValDB] = sendScouts(solutionDB, objValDB, numScouted, upperBound, lowerBound);
     end
+    
 
 end
 
@@ -92,9 +93,9 @@ end
 % The following two lines stores the global best at any given generation.
 % Once the main while loop ends, it will output the index, parameters, and
 % value of the best solution it has found.
-indexGlobal = find(min([objValDB.objVal]));
+[valueGlobal,indexGlobal] = min([objValDB.objVal]);
 
-globalBest = {[solutionDB(indexGlobal).params], objValDB(indexGlobal).objVal};
+globalBest = {[solutionDB(indexGlobal).params], valueGlobal};
 
 %% Solution Display
 % The following displays the solution the algorithm has determined to be the best solution out of all candidate solutions. 

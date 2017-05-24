@@ -74,7 +74,7 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
         alpha = 0.85;
         T_min = 0.1;
         alphaTime = 100;
-        [newSol, newObjVal] = anneal(solutionDB(bestSol(1,1)).params, bestSol(1,2), T, alpha, T_min, alphaTime); 
+        [newSol, newObjVal] = anneal(solutionDB(bestSol{1}).params, bestSol{2}, T, alpha, T_min, alphaTime); 
         
     else
         %use RWDE
@@ -90,13 +90,13 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
     %
     % If so, it assigns it to that index, otherwise adds one to the scout
     % counter to show it was not a better solution.
-    if newObjVal < [bestSol{2}]
-        solutionDB(bestSol(1,1)).params = newSol;
-        objValDB(bestSol(1,1)).objVal = newObjVal;
-        objValDB(bestSol(1,1)).scouted = 0;
-        objValDB(bestSol(1,1)).best = newObjVal;
+    if newObjVal < bestSol{2}
+        solutionDB(bestSol{1}).params = newSol;
+        objValDB(bestSol{1}).objVal = newObjVal;
+        objValDB(bestSol{1}).scouted = 0;
+        objValDB(bestSol{1}).best = newObjVal;
     else
-        objValDB(bestSol(1,1)).scouted = objValDB(bestSol(1,1)).scouted + 1;
+    objValDB(bestSol{1}).scouted = objValDB(bestSol{1}).scouted + 1 ;
     end
     
 end

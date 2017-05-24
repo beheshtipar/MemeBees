@@ -69,7 +69,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
 
     
     [trialVal] = objFunc(trial);
-    [origVal] = objFunc(trial);
+    [origVal] = objFunc(sampleData);
     
     %%
     % Assuming a minimum value is desired for each case, this returns a 1
@@ -115,8 +115,8 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
         % in and assign a new random point. This deals with lost points.
         
         if objValDB(i).best == 0
-            objValDB(i).objVal = nextGenV(i);
-        elseif objValDB(i).objVal >= nextGenV(i)
+            objValDB(i).best = nextGenV(i);
+        elseif objValDB(i).best >= nextGenV(i)
             objValDB(i).best = nextGenV(i);
             objValDB(i).scouted = 0;
         else
