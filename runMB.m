@@ -49,7 +49,7 @@ lowerBound = -5.*ones(1, const(2));
 globalBest = {};
 
 for i=1:const(6)
-    %% <sendEmployedBees.html .: Stochastic Long-Distance Exploration>
+    %% <sendEmployedBees.html Stochastic Long-Distance Exploration>
    
     [solutionDB, objValDB] = sendEmployedBees(solutionDB, objValDB, const(3));
     %% <sendOnlook.rBees.html SendOnlookerBees: Stochastic Moderate-Distance Exploration>
