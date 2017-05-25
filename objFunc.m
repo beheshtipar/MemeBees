@@ -38,6 +38,7 @@ function [outVal] = objFunc(inData)
 %n-variable Rosenbrock Generalization function % VALLEY
 func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end-1)).^2, 2);
 
+
 %%
 % Multi Modal Functions: 
 % Functions with multiple local minima. Extremely difficult for hill-walking algorithms
@@ -99,12 +100,12 @@ func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end
     
     
      
-    outVal = zeros(length(inData(:,1)),1);
-    for i=1:length(inData(:,1))
-            outVal(i,1) = func(inData(i,:));
-    end
+    %outVal = zeros(length(inData(:,1)),1);
+    %for i=1:length(inData(:,1))
+            %outVal(i,1) = func(inData(i,:));
+    %end
  
-
+    outVal = func(inData);
 
     
     

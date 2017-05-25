@@ -37,7 +37,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     v = zeros(numBees,numParam);
     
     for i=1:numBees 
-        randChoice = randsample(numBees,3);
+        randChoice = randperm(numBees,3);
         v(i,:) = solutionDB(randChoice(1)).params + solutionDB(randChoice(2)).params - solutionDB(randChoice(3)).params;
     end
      
@@ -86,6 +86,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     % Next generation of candidate solutions created using fitness decision
     % data whose logic is given by,
     %
+    
     % <<eq4.PNG>>
     nextGenP = (trial .* decisionFit) + (sampleData .* decisionOrig);
     %%

@@ -60,7 +60,7 @@ while (T>T_min)
         % Generate random neighboring solution from current solution by
         % swapping 2 variables.
         
-        cost = objFun(solution);
+        cost = objFunc(solution);
         %%
         % Fitness obtained from an external script for modularity
         

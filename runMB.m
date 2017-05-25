@@ -27,6 +27,8 @@ num_lines = 1;
 const = inputdlg(prompt,dlg_title,num_lines);
 const = str2double(const);
 
+tic;
+
 %% Upper and Lower Bounds
 % The bounds of the search are not prompted to be changed, and so much be
 % edited before starting the algorithm. Enter parameters in order as row
@@ -104,7 +106,15 @@ disp('||                      ||')
 disp('||    Solution Found    ||')
 disp('||                      ||')
 disp('- - - - - - - - - - - - - ')
-fprintf('\n')
+fprintf('\n');
+toc;
+fprintf('\n');
+fprintf('Number of Bees = %d \n', const(1));
+fprintf('Number of Parameters= %d \n', const(2));
+fprintf('CR = %f \n', const(3));
+fprintf('Local Search Ratio = %d \n', const(4));
+fprintf('Scout Limit = %d \n', const(5));
+fprintf('Number of Function Evaluations: %d \n \n', const(6));
 disp(['Best objective value found: ', num2str(globalBest{1,2})]) 
 disp(' ')
 disp('Corresponding Candidate Solution:')

@@ -53,7 +53,7 @@ function [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, CR)
     
     sampleData = reshape([solutionDB.params], size(solutionDB(1).params,2), length(solutionDB))'; 
     
-    r1r2 = randsample(length(objValDB), 2);
+    r1r2 = randperm(length(objValDB), 2);
     
     %%
     % Vectorized version of mutator equation,
