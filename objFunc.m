@@ -98,12 +98,30 @@ func = @(X) sum( 100*(X(:, 2:2:end) - X(:, 1:2:end-1).^2).^2 + (1 - X(:, 1:2:end
 
     
     
-    
-     
+   
     %outVal = zeros(length(inData(:,1)),1);
     %for i=1:length(inData(:,1))
             %outVal(i,1) = func(inData(i,:));
     %end
+
+    
+    
+    
+    %{ 
+        here, must go
+    
+        {input parameters for each case} 
+            -> [objective Function] ->
+        {output as singular value to respective data matrix}
+    
+     For testing purposes
+    outVal = zeros(length(inData(:,1)),1);
+    for i=1:length(inData(:,1))
+            outVal(i,1) = func(inData(i,:));
+    end
+    
+        
+    %}
  
     outVal = func(inData);
 
