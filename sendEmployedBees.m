@@ -25,15 +25,20 @@
 
 %% Source Code
 function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
+    numBees = length(solutionDB); 
+    numParam = length(solutionDB(1).params);
+
     %%
     % Equation in the mutation loop given by,
     % 
     % <<eq2.PNG>>
+    
+    
     v = zeros(numBees,numParam);
     
     for i=1:numBees 
-        randChoice = randSample(numBees,3);
-        v(i,:) = solutionDB.params(randChoice(1,1),:) + ( solutionDB.params(randChoice(1,2),:) - solutionDB.params(randChoice(1,3),:));
+        randChoice = randperm(numBees,3);
+        v(i,:) = solutionDB(randChoice(1)).params + solutionDB(randChoice(2)).params - solutionDB(randChoice(3)).params;
     end
      
     %% 
@@ -43,7 +48,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     randomMatrix = rand(length(solutionDB), size(solutionDB(1).params,2));
     
     decMatV = randomMatrix <= CR ; 
-    decMatOrig = detMatV ~= 1;
+    decMatOrig = decMatV ~= 1;
     
     %%
     % After that, we extract a matrix of all the candidate solutions from
@@ -64,7 +69,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
 
     
     [trialVal] = objFunc(trial);
-    [origVal] = objFunc(trial);
+    [origVal] = objFunc(sampleData);
     
     %%
     % Assuming a minimum value is desired for each case, this returns a 1
@@ -81,11 +86,12 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     % Next generation of candidate solutions created using fitness decision
     % data whose logic is given by,
     %
+    
     % <<eq4.PNG>>
     nextGenP = (trial .* decisionFit) + (sampleData .* decisionOrig);
     %%
     % Next generation of objective function values
-    nextGenV = (trialVal .* decisionFit(:,1)) + ( sampleData .* decisionOrig(:,1));
+    nextGenV = (trialVal .* decisionFit(:,1)) + ( origVal .* decisionOrig(:,1));
         %%
         % Assigns the next generation of parameters and objective function's value
         %
@@ -110,8 +116,8 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
         % in and assign a new random point. This deals with lost points.
         
         if objValDB(i).best == 0
-            objValDB(i).objVal = nextGenV(i);
-        elseif objValDB(i).objVal >= nextGenV(i)
+            objValDB(i).best = nextGenV(i);
+        elseif objValDB(i).best >= nextGenV(i)
             objValDB(i).best = nextGenV(i);
             objValDB(i).scouted = 0;
         else

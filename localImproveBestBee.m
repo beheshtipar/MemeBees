@@ -60,7 +60,7 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
     %%
     % Stores the best candidate solution and its corresponding objective
     % value.
-    bestSol = {find(objValues == fBest), fBest};
+    bestSol = {find(objValues == fBest,1), fBest};
    
     %%
     % Now, we implement the adaptive scheme to balance between both local
@@ -74,14 +74,14 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
         alpha = 0.85;
         T_min = 0.1;
         alphaTime = 100;
-        [newSol, newObjVal] = anneal(solutionDB(bestSol(1,1)).params, bestSol(1,2), T, alpha, T_min, alphaTime); 
+        [newSol, newObjVal] = anneal([solutionDB(bestSol{1}).params], bestSol{2}, T, alpha, T_min, alphaTime); 
         
     else
         %use RWDE
         step = 1;
         minStep = 0.05;
         N = 1000;
-        [newSol, newObjVal] = RWDE(solutionDB(bestSol(1,1)).params, length(solutionDB(bestSol(1,1)).params), step, minStep, N);
+        [newSol, newObjVal] = RWDE([solutionDB(bestSol{1}).params], size([solutionDB(bestSol{1}).params],1), step, minStep, N);
     end
 
     %%
@@ -90,13 +90,15 @@ function [solutionDB, objValDB, fitnessDiv] = localImproveBestBee (solutionDB, o
     %
     % If so, it assigns it to that index, otherwise adds one to the scout
     % counter to show it was not a better solution.
-    if newObjVal < bestSol(1,2)
-        solutionDB(bestSol(1,1)).params = newSol;
-        objValDB(bestSol(1,1)).objVal = newObjVal;
-        objValDB(bestSol(1,1)).scouted = 0;
-        objValDB(bestSol(1,1)).best = newObjVal;
+    if newObjVal < bestSol{2}
+        solutionDB(bestSol{1}).params = newSol;
+        objValDB(bestSol{1}).objVal = newObjVal;
+        objValDB(bestSol{1}).scouted = 0;
+        objValDB(bestSol{1}).best = newObjVal;
     else
-        objValDB(bestSol(1,1)).scouted = objValDB(bestSol(1,1)).scouted + 1;
+    objValDB = setfield(objValDB, {bestSol{1}},'scouted',[objValDB(bestSol{1}).scouted] + 1);
+    %objValDB(bestSol{1}).scouted = [objValDB(bestSol{1}).scouted] + 1 ;
+    
     end
     
 end

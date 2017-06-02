@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SendEmployedBees: Stochastic Long-Distance Exploration of Design Space</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-16"><meta name="DC.source" content="sendEmployedBees.m"><style type="text/css">
+      --><title>SendEmployedBees: Stochastic Long-Distance Exploration of Design Space</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-24"><meta name="DC.source" content="sendEmployedBees.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,31 +67,33 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1><b>SendEmployedBees: Stochastic Long-Distance Exploration of Design Space</b></h1><!--introduction--><p>Created on May 8, 2017 By Parsa Beheshti</p><p>From "Memetic Artificial Bee Colony Algorithm for Large-Scale Global Optimization" by <i>Fister et al</i>.</p><p><a href="runMB.html">Back to Main Method</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Function I/O</a></li><li><a href="#2">Source Code</a></li></ul></div><h2>Function I/O<a name="1"></a></h2><p><b>Input:</b></p><div><ul><li><b>solutionDB</b>: Current generation data structure for candidate solutions</li></ul></div><div><ul><li><b>objValDB</b>: Current generation data structure for objective function values</li></ul></div><div><ul><li><b>CR</b>: Crossover constant passed down from main script; Will be used   to determine field values of trial solution to be compared for fitness</li></ul></div><p><b>Output:</b></p><div><ul><li><b>solutionDB</b>:Next generation data structure for candidate solutions</li></ul></div><div><ul><li><b>objValDB</b>: Next generation data structure for candidate solutions</li></ul></div><h2>Source Code<a name="2"></a></h2><pre class="codeinput"><span class="keyword">function</span> [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
+</pre><pre class="codeinput">    numBees = length(solutionDB);
+    numParam = length(solutionDB(1).params);
 </pre><p>Equation in the mutation loop given by,</p><p><img vspace="5" hspace="5" src="eq2.PNG" alt=""> </p><pre class="codeinput">    v = zeros(numBees,numParam);
 
     <span class="keyword">for</span> i=1:numBees
-        randChoice = randSample(numBees,3);
-        v(i,:) = solutionDB.params(randChoice(1,1),:) + ( solutionDB.params(randChoice(1,2),:) - solutionDB.params(randChoice(1,3),:));
+        randChoice = randsample(numBees,3);
+        v(i,:) = solutionDB(randChoice(1)).params + solutionDB(randChoice(2)).params - solutionDB(randChoice(3)).params;
     <span class="keyword">end</span>
 </pre><p>Afterwards, the trial set is chosen using the logic given by,</p><p><img vspace="5" hspace="5" src="eq3.PNG" alt=""> </p><pre class="codeinput">    randomMatrix = rand(length(solutionDB), size(solutionDB(1).params,2));
 
     decMatV = randomMatrix &lt;= CR ;
-    decMatOrig = detMatV ~= 1;
+    decMatOrig = decMatV ~= 1;
 </pre><p>After that, we extract a matrix of all the candidate solutions from <b>solutionDB</b>.</p><pre class="codeinput">    sampleData = reshape([solutionDB.params], size(solutionDB(1).params,2), length(solutionDB))';
 </pre><p>Trial solution created from crossover comparison between mutated and initial solution.</p><pre class="codeinput">    trial = (decMatV .* v) + (decMatOrig .* sampleData);
 </pre><p>Evaluates the objective functions given parameters from each bee using data from trial solutions and current generation (original) solution.</p><p><b><i>objFunc</i> must be defined in a separate script containing the objective function that will be evaluated using column data from sampleData.</b></p><pre class="codeinput">    [trialVal] = objFunc(trial);
-    [origVal] = objFunc(trial);
+    [origVal] = objFunc(sampleData);
 </pre><p>Assuming a minimum value is desired for each case, this returns a 1 for each case that the trial solution presents a better fitness.</p><pre class="codeinput">    decisionFit = trialVal &lt;= origVal;
 </pre><p>Horizontal stacking of column vector to address matrix dimension compatibility.</p><pre class="codeinput">    decisionFit = repmat(decisionFit,1,size(solutionDB(1).params,2));
     decisionOrig = decisionFit ~= 1;
 </pre><p>Next generation of candidate solutions created using fitness decision data whose logic is given by,</p><p><img vspace="5" hspace="5" src="eq4.PNG" alt=""> </p><pre class="codeinput">    nextGenP = (trial .* decisionFit) + (sampleData .* decisionOrig);
-</pre><p>Next generation of objective function values</p><pre class="codeinput">    nextGenV = (trialVal .* decisionFit(:,1)) + ( sampleData .* decisionOrig(:,1));
+</pre><p>Next generation of objective function values</p><pre class="codeinput">    nextGenV = (trialVal .* decisionFit(:,1)) + ( origVal .* decisionOrig(:,1));
 </pre><p>Assigns the next generation of parameters and objective function's value</p><p>This is okay because we can make the assumption that the initial set of candidate solutions are not at an optima, and don't need an intial evaluation of the objective function.</p><pre class="codeinput">    <span class="keyword">for</span> i=1:length(solutionDB)
 </pre><pre class="codeinput">        solutionDB(i).params = nextGenP(i,:);
         objValDB(i).objVal = nextGenV(i);
 </pre><div><ul><li>The first if deals with generation 0's value and assigning it as best; must be done or there will never be a best generation.</li></ul></div><div><ul><li>The second if deals with resetting the scouting counter and assigning the best objective value should it be better than the existing one.</li></ul></div><div><ul><li>The else deals with adding to the scout counter if no better value is found for that generation, where the scout function will kick in and assign a new random point. This deals with lost points.</li></ul></div><pre class="codeinput">        <span class="keyword">if</span> objValDB(i).best == 0
-            objValDB(i).objVal = nextGenV(i);
-        <span class="keyword">elseif</span> objValDB(i).objVal &gt;= nextGenV(i)
+            objValDB(i).best = nextGenV(i);
+        <span class="keyword">elseif</span> objValDB(i).best &gt;= nextGenV(i)
             objValDB(i).best = nextGenV(i);
             objValDB(i).scouted = 0;
         <span class="keyword">else</span>
@@ -99,7 +101,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
         <span class="keyword">end</span>
 </pre><pre class="codeinput">    <span class="keyword">end</span>
 </pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><p><a href="runMB.html">Back to Main Method</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+</pre><p><a href="runMB.html">Back to Main Method</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% *SendEmployedBees: Stochastic Long-Distance Exploration of Design Space*
 %
@@ -128,15 +130,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 %% Source Code
 function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
+    numBees = length(solutionDB); 
+    numParam = length(solutionDB(1).params);
+
     %%
     % Equation in the mutation loop given by,
     % 
     % <<eq2.PNG>>
+    
+    
     v = zeros(numBees,numParam);
     
     for i=1:numBees 
-        randChoice = randSample(numBees,3);
-        v(i,:) = solutionDB.params(randChoice(1,1),:) + ( solutionDB.params(randChoice(1,2),:) - solutionDB.params(randChoice(1,3),:));
+        randChoice = randsample(numBees,3);
+        v(i,:) = solutionDB(randChoice(1)).params + solutionDB(randChoice(2)).params - solutionDB(randChoice(3)).params;
     end
      
     %% 
@@ -146,7 +153,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     randomMatrix = rand(length(solutionDB), size(solutionDB(1).params,2));
     
     decMatV = randomMatrix <= CR ; 
-    decMatOrig = detMatV ~= 1;
+    decMatOrig = decMatV ~= 1;
     
     %%
     % After that, we extract a matrix of all the candidate solutions from
@@ -167,7 +174,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
 
     
     [trialVal] = objFunc(trial);
-    [origVal] = objFunc(trial);
+    [origVal] = objFunc(sampleData);
     
     %%
     % Assuming a minimum value is desired for each case, this returns a 1
@@ -188,7 +195,7 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
     nextGenP = (trial .* decisionFit) + (sampleData .* decisionOrig);
     %%
     % Next generation of objective function values
-    nextGenV = (trialVal .* decisionFit(:,1)) + ( sampleData .* decisionOrig(:,1));
+    nextGenV = (trialVal .* decisionFit(:,1)) + ( origVal .* decisionOrig(:,1));
         %%
         % Assigns the next generation of parameters and objective function's value
         %
@@ -213,8 +220,8 @@ function [solutionDB, objValDB] = sendEmployedBees (solutionDB, objValDB, CR)
         % in and assign a new random point. This deals with lost points.
         
         if objValDB(i).best == 0
-            objValDB(i).objVal = nextGenV(i);
-        elseif objValDB(i).objVal >= nextGenV(i)
+            objValDB(i).best = nextGenV(i);
+        elseif objValDB(i).best >= nextGenV(i)
             objValDB(i).best = nextGenV(i);
             objValDB(i).scouted = 0;
         else

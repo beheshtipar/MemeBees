@@ -16,7 +16,10 @@
 % * *Local Search _ratio_*
 % * *Scout Limit*
 % * *Maximum Number of Function Evaluations _FE_*
- 
+
+
+clear all;
+
 prompt = {'Enter number of bees:','Enter number of parameters:','Enter CR:', 'Enter Search Ratio: ', 'Enter Scout Limit: ', 'Enter maximum number of FE: '};
 dlg_title = 'Algorithm Constants';
 num_lines = 1;
@@ -24,14 +27,16 @@ num_lines = 1;
 const = inputdlg(prompt,dlg_title,num_lines);
 const = str2double(const);
 
+tic;
+
 %% Upper and Lower Bounds
 % The bounds of the search are not prompted to be changed, and so much be
 % edited before starting the algorithm. Enter parameters in order as row
 % vectors.
 
-upperBound = []; 
+upperBound = 5.*ones(1, const(2));
 
-lowerBound = []; 
+lowerBound = -5.*ones(1, const(2));
 
 %% <init.html Initialization>
 % Calls the *init* function to obtain the intial candidate solution set.
@@ -46,10 +51,10 @@ lowerBound = [];
 globalBest = {};
 
 for i=1:const(6)
-    %% <sendEmployedBees.html SendEmployedBees: Stochastic Long-Distance Exploration>
+    %% <sendEmployedBees.html Stochastic Long-Distance Exploration>
    
     [solutionDB, objValDB] = sendEmployedBees(solutionDB, objValDB, const(3));
-    %% <sendOnlookerBees.html SendOnlookerBees: Stochastic Moderate-Distance Exploration>
+    %% <sendOnlook.rBees.html SendOnlookerBees: Stochastic Moderate-Distance Exploration>
    
     [solutionDB, objValDB] = sendOnlookerBees(solutionDB, objValDB, const(3));
     %% <localImproveBestBee.html LocalImproveBestBee>
@@ -77,11 +82,12 @@ for i=1:const(6)
     % violate their scouting limit.
     
     %% 
-    needNewPoints = size(find(newScouts),1) ~= 0;
+    needNewPoints = size(find(numScouted),1) ~= 0;
 
     if needNewPoints
         [solutionDB, objValDB] = sendScouts(solutionDB, objValDB, numScouted, upperBound, lowerBound);
     end
+    
 
 end
 
@@ -89,9 +95,9 @@ end
 % The following two lines stores the global best at any given generation.
 % Once the main while loop ends, it will output the index, parameters, and
 % value of the best solution it has found.
-indexGlobal = find(min([objValDB.objVal]));
+[valueGlobal,indexGlobal] = min([objValDB.objVal]);
 
-globalBest = {[solutionDB(indexGlobal).params], objValDB(indexGlobal).objVal};
+globalBest = {[solutionDB(indexGlobal).params], valueGlobal};
 
 %% Solution Display
 % The following displays the solution the algorithm has determined to be the best solution out of all candidate solutions. 
@@ -100,7 +106,15 @@ disp('||                      ||')
 disp('||    Solution Found    ||')
 disp('||                      ||')
 disp('- - - - - - - - - - - - - ')
-fprintf('\n')
+fprintf('\n');
+toc;
+fprintf('\n');
+fprintf('Number of Bees = %d \n', const(1));
+fprintf('Number of Parameters= %d \n', const(2));
+fprintf('CR = %f \n', const(3));
+fprintf('Local Search Ratio = %d \n', const(4));
+fprintf('Scout Limit = %d \n', const(5));
+fprintf('Number of Function Evaluations: %d \n \n', const(6));
 disp(['Best objective value found: ', num2str(globalBest{1,2})]) 
 disp(' ')
 disp('Corresponding Candidate Solution:')
